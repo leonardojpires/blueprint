@@ -5,7 +5,7 @@ const groqLimiter = rateLimit({
     limit: 50,
     standardHeaders: true,
     legacyHeaders: false,
-    keyGenerator: (req, res) => {
+    keyGenerator: (req) => {
         if (req.user?.sub) return req.user?.sub.toString();
 
         const ipv6Subnet = 56;

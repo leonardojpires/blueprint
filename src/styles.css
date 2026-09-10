@@ -436,29 +436,10 @@ p {
   font-weight: 650;
 }
 
-.preview-message,
 .preview-plan {
   border-radius: 0.5rem;
   font-size: 0.9rem;
   line-height: 1.6;
-}
-
-.preview-message {
-  margin-top: 1rem;
-  max-width: 82%;
-  padding: 0.9rem 1rem;
-}
-
-.preview-message-user {
-  margin-left: auto;
-  background: var(--accent);
-  color: #ffffff;
-}
-
-.preview-message-ai {
-  border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.72);
-  color: #000;
 }
 
 .preview-plan {

@@ -62,8 +62,6 @@ export function useChat(): UseChatResult {
         const assistantText =
           result.status === "ready" && result.plan
             ? `Groq generated a study plan recommendation titled "${result.plan.title}". Review the preview below and save it if you like.`
-            : result.assistantText.trim().startsWith("{")
-            ? result.assistantText
             : result.assistantText;
 
         setMessages((prev) => [

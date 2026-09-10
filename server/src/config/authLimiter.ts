@@ -5,7 +5,7 @@ const loginLimiter = rateLimit({
     limit: 7,
     standardHeaders: true,
     legacyHeaders: false,
-    keyGenerator: (req, res) => {
+    keyGenerator: (req) => {
         const { email } = req.body;
         const normalizedEmail = email?.trim().toLowerCase();
 

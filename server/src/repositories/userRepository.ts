@@ -66,9 +66,4 @@ export class UserRepository implements IUserRepository {
         }
     }
 
-    async delete(user: User): Promise<void> {
-        if (user.id) {
-            await pool.execute('DELETE FROM users WHERE id = ?', [user.id]);
-        }
-    }
 }
