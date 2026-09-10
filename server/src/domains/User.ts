@@ -28,17 +28,9 @@ export class User {
         this.updated_at = updated_at;
     }
 
-    public is_adminUser(): boolean {
-        return this.is_admin;
-    }
-
     public async checkPassword(password: string): Promise<boolean> {
         return await bcrypt.compare(password, this.passwordHash);
     }
-
-    // public async setPassword(password: string): Promise<void> {
-    //     this.passwordHash = await bcrypt.hash(password, 10);
-    // }
 
     public get getPassword(): string {
         return this.passwordHash;

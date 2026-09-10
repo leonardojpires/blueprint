@@ -6,7 +6,7 @@ type AuthenticatedRequest = Request & { user?: { sub?: number } };
 export class UserController {
     constructor(private userService: UserService) {}
 
-    getAllUsers = async (req: Request, res: Response) => {
+    getAllUsers = async (_req: Request, res: Response) => {
         try {
             const result = await this.userService.getAllUsers();
 

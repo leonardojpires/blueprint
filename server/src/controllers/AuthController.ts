@@ -47,7 +47,7 @@ export class AuthController {
         }
     }
 
-    logout = async (req: Request, res: Response) => {
+    logout = async (_req: Request, res: Response) => {
         try {
             await this.authService.logout(res);
             

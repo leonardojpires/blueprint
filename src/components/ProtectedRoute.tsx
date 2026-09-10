@@ -12,10 +12,15 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   if (status === "loading") {
     return (
-      <div className="app-workspace flex min-h-screen items-center justify-center">
-        <p className="rounded-lg border border-[var(--glass-border)] bg-white/70 px-4 py-3 text-sm font-semibold text-[var(--text-muted)] shadow-sm backdrop-blur-xl">
-          Checking authentication...
-        </p>
+      <div
+        className="app-workspace flex min-h-screen items-center justify-center"
+        role="status"
+      >
+        <span
+          className="h-8 w-8 animate-spin rounded-full border-4 border-[var(--border)] border-t-[var(--accent)] motion-reduce:animate-none"
+          aria-hidden="true"
+        />
+        <span className="sr-only">Loading...</span>
       </div>
     );
   }

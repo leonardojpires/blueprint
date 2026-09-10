@@ -4,7 +4,6 @@ import { ErrorRequestHandler, Request, Response } from "express";
 const {
     invalidCsrfTokenError,
     generateCsrfToken,
-    validateRequest,
     doubleCsrfProtection
 } = doubleCsrf({
     getSecret: () => {

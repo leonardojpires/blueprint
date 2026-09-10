@@ -3,11 +3,10 @@
 interface PromptFormProps {
   isSubmitting: boolean;
   onSubmit: (values: { prompt: string }) => Promise<void>;
-  examples?: string[];
 }
 
 
-export function PromptForm({ isSubmitting, onSubmit, examples = [] }: PromptFormProps) {
+export function PromptForm({ isSubmitting, onSubmit }: PromptFormProps) {
   const [prompt, setPrompt] = useState("");
 
   const charCount = useMemo(() => prompt.length, [prompt]);
@@ -25,10 +24,6 @@ export function PromptForm({ isSubmitting, onSubmit, examples = [] }: PromptForm
       event.preventDefault();
       handleSubmit(event as unknown as FormEvent<HTMLFormElement>);
     }
-  }
-
-  function applyExample(example: string) {
-    setPrompt(example);
   }
 
   return (
@@ -54,15 +49,6 @@ export function PromptForm({ isSubmitting, onSubmit, examples = [] }: PromptForm
       </div>
       <div className="prompt-meta mt-2 flex items-center justify-between text-xs text-[var(--text-muted)]">
         <span>{charCount} characters</span>
-        {examples.length > 0 && (
-          <button
-            type="button"
-            onClick={() => applyExample(examples[0])}
-            className="font-semibold text-[var(--accent)] hover:underline"
-          >
-            Try an example
-          </button>
-        )}
       </div>
     </form>
   );

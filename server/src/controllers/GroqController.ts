@@ -26,8 +26,6 @@ export class GroqController {
   /* HELPER METHODS */
   private isString = (value: unknown): value is string =>
     typeof value === "string";
-  private isBoolean = (value: unknown): value is boolean =>
-    typeof value === "boolean";
   private isStringArray = (value: unknown): value is string[] =>
     Array.isArray(value) && value.every((item) => typeof item === "string");
 

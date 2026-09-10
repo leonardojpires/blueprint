@@ -67,7 +67,6 @@ export class StudyPlanController {
         return res.status(404).json({
           message: "Plan not found."
         });
-        console.log(  )
       }
       return res.status(500).json({
         message: "We couldn't load this study plan. Please try again.",

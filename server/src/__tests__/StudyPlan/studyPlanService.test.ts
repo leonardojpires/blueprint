@@ -70,39 +70,6 @@ describe("StudyPlan.generate", () => {
         await expect(service.generate(dto, 0)).rejects.toThrow("User not found");
     });
 
-//     test("must persist a plan through the repository layer", async () => {
-//         const create = jest
-//         .fn<(dto: CreateStudyPlanDTO, userId: number) => Promise<number>>()
-//         .mockResolvedValue(1);
-
-//         const repository = {
-//             create
-//         } as unknown as IStudyPlanRepository
-
-//         const service = new StudyPlanService(repository);
-//         const dto: CreateStudyPlanDTO = {
-//             title: "Test Plan",
-//             description: "This is just a test plan",
-//             is_saved: false,
-//             weeks: 			
-// [            {
-// 				week_number: 1,
-// 				title: "Getting Started with React",
-// 				objectives: [
-// 					"Understand React components and JSX",
-// 					"Learn to use React hooks"
-// 				],
-// 				topics: [
-// 					"React components and JSX",
-// 					"React hooks"
-// 				]
-// 			}]
-//         }
-
-//         const studyPlan = await service.generate(dto, 1);
-
-//         expect(repository.create).toHaveBeenCalledWith(studyPlan);
-//     })
 })
 
 describe("StudyPlan.deletePlan", () => {

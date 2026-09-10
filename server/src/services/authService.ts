@@ -46,8 +46,6 @@ export class AuthService {
 
         const token = buildToken(user.id, rememberMe);
 
-        if (!isPasswordValid) throw new Error("Invalid password.");
-
         return {
             success: true,
             user,
