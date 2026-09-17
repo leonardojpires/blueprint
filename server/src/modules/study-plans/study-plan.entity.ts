@@ -22,19 +22,4 @@ export class StudyPlan {
         this.created_at = props.created_at;
         this.updated_at = props.updated_at;
     }
-
-    static generate(dto: CreateStudyPlanDTO, userId: number): StudyPlan { 
-        return new StudyPlan({
-            title: dto.title,
-            description: dto.description ?? "",
-            is_saved: dto.is_saved ?? false,
-            weeks: (dto.weeks ?? []).map(week => new StudyPlanWeek({
-                week_number: week.week_number,
-                title: week.title,
-                objectives: week.objectives,
-                topics: week.topics
-            })),
-            user_id: userId
-        });
-    }
 }
