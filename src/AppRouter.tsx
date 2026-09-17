@@ -1,14 +1,14 @@
 import { Route, Routes } from "react-router-dom";
-import { AppShell } from "./components/layout/AppShell";
-import { ProtectedRoute } from "./components/ProtectedRoute";
-import { ChatPage } from "./pages/ChatPage";
-import { GuidePage } from "./pages/GuidePage";
-import { LandingPage } from "./pages/LandingPage";
-import { LoginPage } from "./pages/LoginPage";
-import { NotFoundPage } from "./pages/NotFoundPage";
-import { PlanDetailsPage } from "./pages/PlanDetailsPage";
-import { ProfilePage } from "./pages/ProfilePage";
-import { RegisterPage } from "./pages/RegisterPage";
+import { AppShell } from "./shared/layout/AppShell";
+import { ProtectedRoute } from "./modules/auth/ProtectedRoute";
+import { ChatPage } from "./modules/chat/ChatPage";
+import { GuidePage } from "./modules/guide/GuidePage";
+import { LandingPage } from "./modules/home/LandingPage";
+import { LoginPage } from "./modules/auth/LoginPage";
+import { NotFoundPage } from "./shared/pages/NotFoundPage";
+import { PlanDetailsPage } from "./modules/study-plans/PlanDetailsPage";
+import { ProfilePage } from "./modules/users/ProfilePage";
+import { RegisterPage } from "./modules/auth/RegisterPage";
 
 export function AppRouter() {
   return (

@@ -1,11 +1,11 @@
 import express from "express";
 import cors from "cors";
-import authRouter from "./routes/authRoutes.js";
-import userRouter from './routes/userRoutes.js';
+import authRouter from "./modules/auth/auth.routes.js";
+import userRouter from './modules/users/user.routes.js';
 import cookieParser from "cookie-parser";
-import studyPlanRouter from "./routes/studyPlanRoutes.js";
-import groqRouter from "./routes/groqRoutes.js";
-import { handleCsrfError } from "./middlewares/doubleCsrfProtection.js";
+import studyPlanRouter from "./modules/study-plans/study-plan.routes.js";
+import groqRouter from "./modules/groq/groq.routes.js";
+import { handleCsrfError } from "./middleware/csrf.middleware.js";
 
 const app = express();
 
