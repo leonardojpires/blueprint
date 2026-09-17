@@ -1,11 +1,8 @@
-import bcrypt from 'bcrypt';
-import { ShowUserDTO } from './user.dto.js';
-
 export class User {
     public id?: number | undefined;
     public name: string;
     public email: string;
-    private passwordHash: string;
+    public readonly passwordHash: string;
     public is_admin: boolean;
     public created_at: Date;
     public updated_at: Date;
@@ -28,16 +25,4 @@ export class User {
         this.updated_at = updated_at;
     }
 
-    public async checkPassword(password: string): Promise<boolean> {
-        return await bcrypt.compare(password, this.passwordHash);
-    }
-
-    public get getPassword(): string {
-        return this.passwordHash;
-    }
-
-    public toSafeObject(): ShowUserDTO {
-        const { id, name, email, is_admin } = this;
-        return { id, name, email, is_admin };
-    }
 }

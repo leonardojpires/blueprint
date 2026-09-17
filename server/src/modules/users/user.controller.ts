@@ -1,5 +1,6 @@
 import type { AuthenticatedRequest } from "../auth/auth.types.js";
 import { UserService } from "./user.service.js";
+import { toShowUserDTO } from "./user.mapper.js";
 import { Request, Response } from 'express';
 
 export class UserController {
@@ -9,7 +10,7 @@ export class UserController {
         try {
             const result = await this.userService.getAllUsers();
 
-            const users = result.map(user => user.toSafeObject());
+            const users = result.map(toShowUserDTO);
 
             return res.status(200).json({
                 success: true,
@@ -31,7 +32,7 @@ export class UserController {
 
             return res.status(200).json({
                 success: true,
-                user: result.toSafeObject()
+                user: toShowUserDTO(result)
             });
         } catch(err: unknown) {
             // console.error("Failed to retrieve user:", err);
@@ -56,7 +57,7 @@ export class UserController {
 
             return res.status(200).json({
                 success: true,
-                user: result.toSafeObject()
+                user: toShowUserDTO(result)
             });
         } catch(err: unknown) {
             // console.error("Failed to retrieve current user:", err);

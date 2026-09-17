@@ -41,7 +41,7 @@ export class AuthService {
         if (!user) throw new Error("This user does not exist.");
         if (!user.id) throw new Error("This user does not exist.");
 
-        const isPasswordValid = await user.checkPassword(password);
+        const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
         if (!isPasswordValid) throw new Error("Invalid password.");
 
         const token = buildToken(user.id, rememberMe);

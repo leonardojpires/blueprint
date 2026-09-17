@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { AuthService } from "./auth.service.js";
 import { buildCookieOptions } from "./auth.token.js";
+import { toShowUserDTO } from "../users/user.mapper.js";
 
 const COOKIE_NAME = process.env.COOKIE_NAME || "auth_token";
 
@@ -18,7 +19,7 @@ export class AuthController {
 
             return res.status(201).json({
                 success: result.success,
-                user: result.user.toSafeObject()
+                user: toShowUserDTO(result.user)
             });
         } catch(error: unknown) {
             // console.error("Account registration failed:", error);
@@ -37,7 +38,7 @@ export class AuthController {
 
             return res.status(200).json({
                 success: result.success,
-                user: result.user.toSafeObject()
+                user: toShowUserDTO(result.user)
             });
         } catch(error: unknown) {
             // console.error("Login failed:", error);
