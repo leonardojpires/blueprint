@@ -26,5 +26,5 @@ app.use("/user", userRouter);
 app.use("/study-plan", studyPlanRouter);
 app.use("/groq", groqRouter);
 app.use(handleCsrfError);
-
+    
 export default app;

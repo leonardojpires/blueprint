@@ -34,7 +34,6 @@ import PlanNotFoundError from "../../errors/plan-not-found.error.js";
 
 export class StudyPlanRepository implements IStudyPlanRepository {
   constructor(private pool: Pool) {}
-
   async create(studyPlan: StudyPlan): Promise<StudyPlan> {
     const conn = await this.pool.getConnection();
     if (!studyPlan.user_id) throw new Error("User not found");

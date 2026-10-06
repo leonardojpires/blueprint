@@ -64,6 +64,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         throw new Error("Registration failed.");
       }
       setStatus("authenticated");
+      setUser(result.user);
       await fetchCsrfToken();
     },
     [],
