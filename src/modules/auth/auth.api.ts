@@ -1,5 +1,5 @@
 import type { CsrfTokenResponse, AuthResponse } from "./auth.types.js";
-import { apiUrl, jsonHeaders, parseJsonResponse } from "../../shared/api/client.js";
+import { apiUrl, jsonHeaders, parseJsonResponse, ensureSuccessfulResponse } from "../../shared/api/client.js";
 
 
 let csrfToken: string;
@@ -43,11 +43,12 @@ export async function fetchCurrentUser(): Promise<AuthResponse> {
 }
 
 export async function logoutUser(): Promise<void> {
-  await fetch(apiUrl("/auth/logout"), {
+  const response = await fetch(apiUrl("/auth/logout"), {
     method: "POST",
     headers: getCsrfHeaders(),
     credentials: "include",
   });
+  ensureSuccessfulResponse(response);
 }
 
 export async function fetchCsrfToken(): Promise<string> {

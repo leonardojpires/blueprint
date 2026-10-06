@@ -15,14 +15,10 @@ export function ProfilePage() {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetchCurrentUser();
+        await fetchCurrentUser();
         if (cancelled) return;
-        if (response.success) {
-          // Sync the auth context so the sidebar reflects the latest user data.
-          await refresh();
-        } else {
-          setError("Could not load your profile information.");
-        }
+        // Sync the auth context so the sidebar reflects the latest user data.
+        await refresh();
       } catch (err: unknown) {
         if (cancelled) return;
         setError(

@@ -1,3 +1,4 @@
+import { sendProblem } from "../../shared/http/problem.js";
 import type { AuthenticatedRequest } from "../auth/auth.types.js";
 import type { ChatMessage } from "./groq.types.js";
 import { Request, Response } from "express";
@@ -61,14 +62,12 @@ export class GroqController {
 
       const userId = authReq.user?.sub;
       if (!userId)
-        return res.status(401).json({ message: "Please sign in to continue." });
+        return sendProblem(res, 401, "AUTHENTICATION_REQUIRED", "Please sign in to continue.");
 
       const { messages } = req.body as { messages?: ChatMessage[] };
 
       if (!Array.isArray(messages)) {
-        return res.status(400).json({
-          message: "Please provide a valid conversation.",
-        });
+        return sendProblem(res, 400, "INVALID_REQUEST", "Please provide a valid conversation.");
       }
 
       const hasInvalidMessage = messages.some(
@@ -80,9 +79,7 @@ export class GroqController {
       );
 
       if (hasInvalidMessage) {
-        return res.status(400).json({
-          message: "Please provide a valid conversation.",
-        });
+        return sendProblem(res, 400, "INVALID_REQUEST", "Please provide a valid conversation.");
       }
 
       const conversationLength = messages.reduce(
@@ -95,31 +92,23 @@ export class GroqController {
         messages.some((message) => message.text.length > MAX_MESSAGE_LENGTH) ||
         conversationLength > MAX_CONVERSATION_LENGTH
       ) {
-        return res.status(413).json({
-          message: "This conversation is too long. Please shorten it and try again.",
-        });
+        return sendProblem(res, 413, "PAYLOAD_TOO_LARGE", "This conversation is too long. Please shorten it and try again.");
       }
 
       const result = await this.groqService.converse(messages);
 
       if (result.status === "ready" && result.plan) {
         if (!this.isValidStudyPlanPayload(result.plan)) {
-          return res
-            .status(422)
-            .json({ message: "We couldn't prepare a valid study plan. Please try again." });
+          return sendProblem(res, 502, "INVALID_AI_RESPONSE", "We couldn't prepare a valid study plan. Please try again.");
         }
 
-        return res.status(200).json({
-          ...result,
-        });
+        return res.status(200).json({ data: result });
       }
 
-      return res.status(200).json(result);
+      return res.status(200).json({ data: result });
     } catch (error: unknown) {
       console.error("Study plan conversation failed:", error);
-      return res.status(500).json({
-        message: "We couldn't process your request. Please try again.",
-      });
+      return sendProblem(res, 500, "INTERNAL_ERROR", "We couldn't process your request. Please try again.");
     }
   };
 
@@ -128,24 +117,16 @@ export class GroqController {
       const authReq = req as AuthenticatedRequest;
       const userId = authReq.user?.sub;
       if (!userId)
-        return res.status(401).json({ message: "Please sign in to continue." });
+        return sendProblem(res, 401, "AUTHENTICATION_REQUIRED", "Please sign in to continue.");
       const payload = req.body;
       if (!this.isValidStudyPlanPayload(payload)) {
-        return res.status(400).json({
-          message: "Please provide a valid study plan.",
-        });
+        return sendProblem(res, 400, "INVALID_REQUEST", "Please provide a valid study plan.");
       }
       const studyPlan = await this.studyPlanService.generate(payload, userId);
-      return res.status(201).json({
-        message: "Study plan persisted successfully in the database.",
-        success: true,
-        studyPlan,
-      });
+      return res.status(201).location(`/study-plan/plan/${studyPlan.id}`).json({ data: studyPlan });
     } catch (error: unknown) {
       // console.error("Failed to save study plan:", error);
-      return res.status(500).json({
-        message: "We couldn't save your study plan. Please try again.",
-      });
+      return sendProblem(res, 500, "INTERNAL_ERROR", "We couldn't save your study plan. Please try again.");
     }
   };
 }

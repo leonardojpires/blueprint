@@ -1,6 +1,7 @@
 import type { ChatMessage, GroqResponse, PersistGroqPlanRequest } from "./chat.types.js";
 import { apiUrl, parseJsonResponse } from "../../shared/api/client.js";
 import { getCsrfHeaders } from "../auth/auth.api.js";
+import type { SavedPlanResponse } from "../study-plans/study-plan.types.js";
 
 
 export async function converse(messages: ChatMessage[]): Promise<GroqResponse> {
@@ -11,12 +12,13 @@ export async function converse(messages: ChatMessage[]): Promise<GroqResponse> {
     credentials: "include",
   });
 
-  return parseJsonResponse<GroqResponse>(response);
+  const body = await parseJsonResponse<{ data: GroqResponse }>(response);
+  return body.data;
 }
 
 export async function persistGroqPlan(
   plan: PersistGroqPlanRequest,
-): Promise<unknown> {
+): Promise<SavedPlanResponse> {
   const response = await fetch(apiUrl("/groq/persist"), {
     method: "POST",
     headers: getCsrfHeaders(),
@@ -24,5 +26,5 @@ export async function persistGroqPlan(
     credentials: "include",
   });
 
-  return parseJsonResponse<unknown>(response);
+  return parseJsonResponse<SavedPlanResponse>(response);
 }

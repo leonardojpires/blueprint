@@ -64,20 +64,12 @@ export function PlanDetailsPage() {
 
       try {
         const response = await getPlanById(id);
-        if (response.success) {
-          const fetchedPlan = Array.isArray(response.plan)
-            ? response.plan[0]
-            : response.plan;
-
-          if (!fetchedPlan) {
-            setIsNotFound(true);
-            return;
-          }
-
-          setPlann(fetchedPlan);
-        } else {
+        if (!response.data) {
           setIsNotFound(true);
+          return;
         }
+
+        setPlann(response.data);
       } catch {
         setIsNotFound(true);
       } finally {

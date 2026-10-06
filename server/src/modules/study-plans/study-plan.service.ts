@@ -2,6 +2,7 @@ import { IStudyPlanRepository } from "./study-plan.repository.interface.js";
 import { StudyPlan } from "./study-plan.entity.js";
 import { CreateStudyPlanDTO } from "./study-plan.dto.js";
 import { StudyPlanWeek } from "./study-plan-week.entity.js";
+import PlanNotFoundError from "../../errors/plan-not-found.error.js";
 
 export class StudyPlanService {
   constructor(private studyPlanRepository: IStudyPlanRepository) {}
@@ -56,6 +57,6 @@ export class StudyPlanService {
       userId,
     );
 
-    if (affectedRows === 0) throw new Error("Study plan not found.");
+    if (affectedRows === 0) throw new PlanNotFoundError("Study plan not found.");
   }
 }

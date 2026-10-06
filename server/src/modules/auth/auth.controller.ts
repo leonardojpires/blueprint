@@ -1,3 +1,4 @@
+import { sendProblem } from "../../shared/http/problem.js";
 import { Request, Response } from "express";
 import { AuthService } from "./auth.service.js";
 import { buildCookieOptions } from "./auth.token.js";
@@ -18,14 +19,11 @@ export class AuthController {
             res.cookie(COOKIE_NAME, result.token, cookieOptions);
 
             return res.status(201).json({
-                success: result.success,
-                user: toShowUserDTO(result.user)
+                data: toShowUserDTO(result.user)
             });
         } catch(error: unknown) {
             // console.error("Account registration failed:", error);
-            return res.status(400).json({
-                message: "We couldn't create your account. Please check your details and try again."
-            });
+            return sendProblem(res, 400, "INVALID_REQUEST", "We couldn't create your account. Please check your details and try again.");
         }
     }
 
@@ -37,14 +35,11 @@ export class AuthController {
             res.cookie(COOKIE_NAME, result.token, cookieOptions);
 
             return res.status(200).json({
-                success: result.success,
-                user: toShowUserDTO(result.user)
+                data: toShowUserDTO(result.user)
             });
         } catch(error: unknown) {
             // console.error("Login failed:", error);
-            return res.status(401).json({
-                message: "The e-mail or password is incorrect."
-            });
+            return sendProblem(res, 401, "AUTHENTICATION_REQUIRED", "The e-mail or password is incorrect.");
         }
     }
 
@@ -54,15 +49,10 @@ export class AuthController {
             
             res.clearCookie(COOKIE_NAME);
 
-            return res.status(200).json({
-                message: "Logged out successfully.", 
-                success: true 
-            });
+            return res.status(204).end();
         } catch(error: unknown) {
             // console.error("Logout failed:", error);
-            return res.status(500).json({
-                message: "We couldn't log you out. Please try again."
-            });
+            return sendProblem(res, 500, "INTERNAL_ERROR", "We couldn't log you out. Please try again.");
         }
     }
 }

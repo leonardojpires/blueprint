@@ -27,16 +27,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const refresh = useCallback(async () => {
     try {
       const response = await fetchCurrentUser();
-      if (response.success) {
-        const token = await fetchCsrfToken();
-        if (!token) throw new Error("CSRF token was not returned");
-        
-        setUser(response.user);
-        setStatus("authenticated");
-      } else {
-        setUser(null);
-        setStatus("unauthenticated");
-      }
+      const token = await fetchCsrfToken();
+      if (!token) throw new Error("CSRF token was not returned");
+
+      setUser(response.data);
+      setStatus("authenticated");
     } catch {
       setUser(null);
       setStatus("unauthenticated");
@@ -49,10 +44,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const login = useCallback(async (email: string, password: string, rememberMe: boolean) => {
     const result = await apiLoginUser(email, password, rememberMe);
-    if (!result.success) {
-      throw new Error("Login failed.");
-    }
-    setUser(result.user);
+    setUser(result.data);
     setStatus("authenticated");
     await fetchCsrfToken();
   }, []);
@@ -60,11 +52,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const register = useCallback(
     async (name: string, email: string, password: string) => {
       const result = await apiRegisterUser(name, email, password);
-      if (!result.success) {
-        throw new Error("Registration failed.");
-      }
       setStatus("authenticated");
-      setUser(result.user);
+      setUser(result.data);
       await fetchCsrfToken();
     },
     [],

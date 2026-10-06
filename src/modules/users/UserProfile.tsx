@@ -45,13 +45,8 @@ export function UserProfile({ user, isLoading, error }: UserProfileProps) {
         const response = await getPlansByUserId();
         if (cancelled) return;
 
-        if (response.success) {
-          setPlans(response.plans ?? []);
-          setActiveIndex(0);
-        } else {
-          setPlans([]);
-          setPlansError("Could not load your saved plans.");
-        }
+        setPlans(response.data);
+        setActiveIndex(0);
       } catch (err: unknown) {
         if (cancelled) return;
         setPlans([]);

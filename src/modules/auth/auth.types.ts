@@ -3,8 +3,7 @@ export type CsrfTokenResponse = {
 }
 
 export interface AuthResponse {
-  success: boolean;
-  user: AuthUser;
+  data: AuthUser;
 }
 
 export interface AuthUser {
