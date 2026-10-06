@@ -7,6 +7,7 @@ import { StudyPlanRepository } from "../study-plans/study-plan.repository.js";
 import { pool } from "../../config/database.js";
 import { groqLimiter } from "./groq.limiter.js";
 import { doubleCsrfProtection } from "../../middleware/csrf.middleware.js";
+import studyPlanValidator from './../../middleware/validator.middleware.js';
 
 const groqRouter = Router();
 
@@ -16,6 +17,6 @@ const groqService = new GroqService();
 const groqController = new GroqController(groqService, studyPlanService);
 
 groqRouter.post("/converse", authenticateToken, doubleCsrfProtection, groqLimiter, groqController.converse);
-groqRouter.post("/persist", authenticateToken, doubleCsrfProtection, groqController.persist);
+groqRouter.post("/persist", authenticateToken, doubleCsrfProtection, studyPlanValidator, groqController.persist);
 
 export default groqRouter;

@@ -5,6 +5,7 @@ import { StudyPlanController } from "./study-plan.controller.js";
 import authenticateToken from "../../middleware/auth.middleware.js";
 import { pool } from "../../config/database.js";
 import { doubleCsrfProtection } from "../../middleware/csrf.middleware.js";
+import studyPlanValidator from "../../middleware/validator.middleware.js";
 
 const studyPlanRouter = Router();
 
@@ -12,7 +13,7 @@ const studyPlanRepository = new StudyPlanRepository(pool);
 const studyPlanService = new StudyPlanService(studyPlanRepository);
 const studyPlanController = new StudyPlanController(studyPlanService);
 
-studyPlanRouter.post("/generate", authenticateToken, doubleCsrfProtection, studyPlanController.generate);
+// studyPlanRouter.post("/generate", authenticateToken, doubleCsrfProtection, studyPlanValidator, studyPlanController.generate);
 studyPlanRouter.get("/get-saved-plans", authenticateToken, studyPlanController.getPlansByUserId);
 studyPlanRouter.get("/plan/:id", authenticateToken, studyPlanController.getPlanById);
 studyPlanRouter.delete("/delete-plan/:id", authenticateToken, doubleCsrfProtection, studyPlanController.deletePlan);

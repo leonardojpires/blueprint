@@ -6,7 +6,6 @@ const JWT_SECRET = process.env.JWT_SECRET || "";
 // const COOKIE_NAME = process.env.COOKIE_NAME || "";
 
 function buildToken(userId: number, rememberMe: boolean) {
-    console.log(rememberMe);
     return jwt.sign(
         { sub: userId },
         JWT_SECRET,
