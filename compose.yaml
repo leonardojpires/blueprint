@@ -1,0 +1,57 @@
+services:
+  blueprint-backend:
+    build: 
+      context: ./server
+      target: dependencies
+    command: >
+      sh -c "npm run migrate:all &&
+            npm run server"
+    container_name: blueprint-api
+    ports:
+      - "3000:3000"
+    env_file: 
+      - ./server/.env
+    depends_on:
+      database:
+        condition: service_healthy
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+
+  blueprint-client:
+    build:
+      context: .
+      dockerfile: src/Dockerfile
+      target: dependencies
+    command: npm run dev -- --host 0.0.0.0
+    container_name: blueprint-client
+    ports:
+      - "5173:5173"
+    env_file: 
+      - ./src/.env
+    volumes:
+      - .:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
+    
+  database:
+    image: mysql:8.4
+    volumes:
+      - blueprint_mysql_data:/var/lib/mysql
+    env_file:
+      - ./server/.env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: study_planner
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - mysqladmin ping -h 127.0.0.1 -uroot -p"$${MYSQL_ROOT_PASSWORD}" --silent
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+volumes:
+  blueprint_mysql_data:
